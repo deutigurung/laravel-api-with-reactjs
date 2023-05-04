@@ -16,6 +16,21 @@ const  CompaniesIndex = () =>{
         getData();
     }
     
+    const deleteCompany = (e) => {
+        // console.log('id',e.target.value);
+        if(!window.confirm('Are you sure want to remove?')){
+            return
+        }
+        const companyId = e.target.value;
+        async function getData(){
+            const response = await fetch('/api/companies/'+companyId,{
+                method: 'DELETE'
+            });
+            //after delete fetch company list 
+            fetchCompanies();
+        }
+        getData();
+    }
     const renderCompanies = () => {
         if(companyList.length > 0) {
             return companyList.map((company, index) => {
@@ -26,6 +41,11 @@ const  CompaniesIndex = () =>{
                         <td className="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">{company.phone}</td>
                         <td className="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">{company.address}</td>
                         <td className="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">{company.website}</td>
+                        <td className="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
+                            <button type="button" className="bg-red-800 hover:bg-red-700 rounded-md text-white px-4 py-2 font-semibold ease-in-out duration-150"
+                                value={company.id} onClick={()=>deleteCompany(event)}
+                            >Delete</button>
+                        </td>
                     </tr>
                );
             })
