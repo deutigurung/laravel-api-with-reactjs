@@ -1,5 +1,5 @@
-import { useState ,useCallback, useEffect } from "react";
-
+import { useState, useEffect } from "react";
+import { NavLink  } from "react-router-dom";
 
 const  CompaniesIndex = () =>{
 
@@ -42,7 +42,7 @@ const  CompaniesIndex = () =>{
                         <td className="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">{company.address}</td>
                         <td className="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">{company.website}</td>
                         <td className="px-6 py-4 text-sm leading-5 text-gray-900 whitespace-no-wrap">
-                            <button type="button" className="bg-red-800 hover:bg-red-700 rounded-md text-white px-4 py-2 font-semibold ease-in-out duration-150"
+                            <button type="button" className="bg-red-600 hover:bg-red-700 rounded-md text-white px-4 py-2 font-semibold ease-in-out duration-150"
                                 value={company.id} onClick={()=>deleteCompany(event)}
                             >Delete</button>
                         </td>
@@ -60,6 +60,9 @@ const  CompaniesIndex = () =>{
    
     return(
         <div className="overflow-hidden overflow-x-auto p-6 bg-white border-gray-200">
+            <div className="flex place-content-end mb-4">
+                <NavLink to="/companies/create" className="px-4 py-2 rounded-md text-black bg-green-600 hover:bg-indigo-700">Create</NavLink>
+            </div>
         <div className="min-w-full align-middle">
             <table className="min-w-full divide-y divide-gray-200 border">
                 <thead>

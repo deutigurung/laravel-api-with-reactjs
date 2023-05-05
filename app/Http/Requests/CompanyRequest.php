@@ -26,7 +26,7 @@ class CompanyRequest extends FormRequest
             'email' => ['required', 'email'],
             'address' => ['nullable', 'string'],
             'phone' => ['required', 'string'],
-            'website' => ['nullable', 'url'],
+            'website' => ['nullable', 'string'],
         ];
     }
 }
