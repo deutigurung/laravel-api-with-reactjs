@@ -8,6 +8,7 @@ const  CompaniesCreate = () =>{
     const [phone,setPhone] =  useState("");
     const [address,setAddress] =  useState("");
     const [website,setWebsite] =  useState("");
+    const [errors,setErrors] =  useState([]);
 
     const navigate = useNavigate();
     
@@ -17,6 +18,7 @@ const  CompaniesCreate = () =>{
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "accept": "application/json",
           },
           body: JSON.stringify({
             name,
@@ -27,9 +29,32 @@ const  CompaniesCreate = () =>{
           }),
         })
           .then((response) => response.json())
-          .then((data) => navigate('/dashboard'))
-          .catch((error) => console.error(error));
+          .then((data) => {
+            // console.log('data',data.errors)
+            if(data.errors){
+                setErrors(data.errors)
+            }else{
+                navigate("/dashboard")
+            }
+        }) //redirect to dashboard after success response
+          .catch(error => setErrors({ errors: error.errors }));
       };
+
+    const errorMessage = (field) => {
+        // console.log('error_field', errors);
+        return (
+            <div className="text-red-600 mt-1">
+                {
+                //errors?.[field] is optional chaining to access the error messages for the specific form field
+                errors?.[field]?.map((message,index) => {
+                    return (
+                        <div key={index}>{message}</div>
+                    )
+                })
+                }
+            </div>
+        );
+    }
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
@@ -39,6 +64,7 @@ const  CompaniesCreate = () =>{
                     <div className="mt-1">
                         <input value={name} onChange={(e)=>setName(e.target.value)} type="text" name="name" id="name"
                                 className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                        {errorMessage('name')}
                     </div>
                 </div>
                 <div>
@@ -46,6 +72,7 @@ const  CompaniesCreate = () =>{
                     <div className="mt-1">
                         <input value={email} onChange={(e)=>setEmail(e.target.value)} type="email" name="email" id="email"
                                 className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                         {errorMessage('email')}
                     </div>
                 </div>
                 <div>
@@ -53,6 +80,7 @@ const  CompaniesCreate = () =>{
                     <div className="mt-1">
                         <input value={phone} onChange={(e)=>setPhone(e.target.value)}  type="text" name="phone" id="phone"
                                 className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                         {errorMessage('phone')}
                     </div>
                 </div>
                 <div>
@@ -60,6 +88,7 @@ const  CompaniesCreate = () =>{
                     <div className="mt-1">
                         <input value={address} onChange={(e)=>setAddress(e.target.value)}  type="text" name="address" id="address"
                                 className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                         {errorMessage('address')}
                     </div>
                 </div>
                 <div>
@@ -67,6 +96,7 @@ const  CompaniesCreate = () =>{
                     <div className="mt-1">
                         <input value={website} onChange={(e)=>setWebsite(e.target.value)}  type="text" name="website" id="website"
                                 className="block mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+                    {errorMessage('website')}
                     </div>
                 </div>
                 
