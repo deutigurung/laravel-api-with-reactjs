@@ -1,10 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate , useParams } from "react-router-dom";
+import ToastContext from "../../Layouts/ToastContext";
 
 const CompaniesEdit = (props) =>{
     // const companyId = props.id;
     const { id } = useParams();
     //id will contain the value of the "id" parameter from the URL
+
+    //import the ToastContext and use the useContext() hook to get the context values and functions. 
+    const {handleToast} = useContext(ToastContext);
+
     // console.log('id',id); 
     const [formData,setFormData] = useState([
         name => "null",email=> "null", phone=> "null",address=> "null",website=>"null"
@@ -16,6 +21,7 @@ const CompaniesEdit = (props) =>{
         const { name,value} = e.target; //destructor
         setFormData({ ...formData,[name]:value});
     }
+    
     //update the form data
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -33,6 +39,7 @@ const CompaniesEdit = (props) =>{
             if(data.errors){
                 setErrors(data.errors)
             }else{
+                handleToast('success', 'Edit successful');
                 navigate("/dashboard")
             }
         }) //redirect to dashboard after success response
@@ -50,7 +57,7 @@ const CompaniesEdit = (props) =>{
         })
         .catch(error=>console.log(error));
     },[])
-    // console.log('formData',formData)
+    
     const errorMessage = (field) => {
         return (
             <div className="text-red-600 mt-1">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ToastContext from "../../Layouts/ToastContext";
 
 const  CompaniesCreate = () =>{
 
@@ -11,7 +12,8 @@ const  CompaniesCreate = () =>{
     const [errors,setErrors] =  useState([]);
 
     const navigate = useNavigate();
-    
+    const {handleToast} = useContext(ToastContext);
+
     const handleSubmit = (event) => {
         event.preventDefault();
         fetch("/api/companies", {
@@ -35,6 +37,7 @@ const  CompaniesCreate = () =>{
                 setErrors(data.errors)
             }else{
                 navigate("/dashboard")
+                handleToast('success', 'Create successful');
             }
         }) //redirect to dashboard after success response
           .catch(error => setErrors({ errors: error.errors }));

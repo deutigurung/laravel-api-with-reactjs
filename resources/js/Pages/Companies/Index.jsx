@@ -1,9 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { NavLink  } from "react-router-dom";
+import ToastContext from "../../Layouts/ToastContext";
+import Notification from "../../Layouts/Notification";
 
 const  CompaniesIndex = () =>{
 
     const [companyList,setCompanyList] = useState([]);
+    
+    const {showToast,toastType,message,handleToast} = useContext(ToastContext); 
+
     const fetchCompanies = ()=>{
         async function getData(){
             const response = await fetch('/api/companies');
@@ -28,9 +33,11 @@ const  CompaniesIndex = () =>{
             });
             //after delete fetch company list 
             fetchCompanies();
+            handleToast('error', 'Delete successful');
         }
         getData();
     }
+
     const renderCompanies = () => {
         if(companyList.length > 0) {
             return companyList.map((company, index) => {
@@ -60,7 +67,8 @@ const  CompaniesIndex = () =>{
     useEffect(()=>{
         fetchCompanies(); //call api once when component render
     },[]);
-   
+
+//    console.log('toast',showToast,toastType,message)
     return(
         <div className="overflow-hidden overflow-x-auto p-6 bg-white border-gray-200">
             <div className="flex place-content-end mb-4">
@@ -94,6 +102,10 @@ const  CompaniesIndex = () =>{
                 </tbody>
             </table>
         </div>
+        {
+            showToast && showToast ? <Notification status={toastType} message={message}></Notification> : null
+        }
+        
     </div>
     );
 }
